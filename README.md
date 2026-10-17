@@ -25,7 +25,7 @@ sudo cp deploy/piscine.env.example /etc/piscine.env   # puis éditer SECRET_KEY
 # contenu du fichier /etc/piscine.env
 SECRET_KEY=$(python3 -c "import secrets;print(secrets.token_hex(32))")
 DATABASE_URL=postgresql:///piscine
-COOKIE_SECURE=1
+COOKIE_SECURE=0
 
 sudo chown root:piscine /etc/piscine.env && sudo chmod 640 /etc/piscine.env
 
