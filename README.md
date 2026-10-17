@@ -21,11 +21,19 @@ sudo -u postgres createuser piscine
 sudo -u postgres createdb -O piscine piscine
 
 sudo cp deploy/piscine.env.example /etc/piscine.env   # puis éditer SECRET_KEY
+
+# contenu du fichier /etc/piscine.env
+SECRET_KEY=$(python3 -c "import secrets;print(secrets.token_hex(32))")
+DATABASE_URL=postgresql:///piscine
+COOKIE_SECURE=1
+
 sudo chown root:piscine /etc/piscine.env && sudo chmod 640 /etc/piscine.env
 
 # Schéma + premier administrateur
-sudo -u piscine env $(grep -v '^#' /etc/piscine.env | xargs) venv/bin/flask --app app init-db
-sudo -u piscine env $(grep -v '^#' /etc/piscine.env | xargs) venv/bin/flask --app app create-admin vous@exemple.ch --name "Olivier"
+set -a; . /etc/piscine.env; set +a
+PE=SECRET_KEY,DATABASE_URL,COOKIE_SECURE
+sudo --preserve-env=$PE -u piscine venv/bin/flask --app app init-db
+sudo --preserve-env=$PE -u piscine venv/bin/flask --app app create-admin olivier@chabaut.fr --name "Olivier"
 
 sudo cp deploy/piscine.service /etc/systemd/system/ && sudo systemctl enable --now piscine
 sudo cp deploy/nginx-piscine.conf /etc/nginx/sites-available/piscine
