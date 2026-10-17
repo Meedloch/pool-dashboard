@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% set nav='apools' %}
+{% block content %}
+<section class="panel"><h2>Nouvelle piscine</h2>
+<form method="post">{{ csrf_input() }}<div class="grid">
+  <div class="field"><label for="name">Nom *</label><input id="name" name="name" required maxlength="120" placeholder="Ex. Villa Dupont"></div>
+  <div class="field"><label for="address">Adresse</label><input id="address" name="address" maxlength="200"></div>
+</div><div class="actions"><button>Créer la piscine</button></div></form></section>
+<section class="panel"><h2>Piscines</h2>
+<div class="tablewrap"><table><thead><tr><th>Nom</th><th>Adresse</th><th>Clients</th><th>Contrôles</th><th></th></tr></thead><tbody>
+{% for p in pools %}<tr><td>{{ p.name }}</td><td>{{ p.address or '—' }}</td><td>{{ p.nclients }}</td><td>{{ p.nchecks }}</td>
+<td><div class="rowactions"><a class="btn small" href="{{ url_for('pool_history', pool_id=p.id) }}">Ouvrir</a><a class="btn small secondary" href="{{ url_for('admin_pool', pool_id=p.id) }}">Réglages</a></div></td></tr>
+{% else %}<tr><td colspan="5" class="empty">Aucune piscine.</td></tr>{% endfor %}</tbody></table></div></section>
+{% endblock %}

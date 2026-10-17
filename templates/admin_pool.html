@@ -1,0 +1,14 @@
+{% extends "base.html" %}{% set nav='pools' %}
+{% block content %}
+{% include "_pooltabs.html" %}
+<section class="panel"><h2>Réglages et accès clients</h2>
+<form method="post">{{ csrf_input() }}<div class="grid">
+  <div class="field"><label for="name">Nom *</label><input id="name" name="name" required maxlength="120" value="{{ pool.name }}"></div>
+  <div class="field"><label for="address">Adresse</label><input id="address" name="address" maxlength="200" value="{{ pool.address or '' }}"></div>
+</div>
+<h3>Clients autorisés à consulter cette piscine (lecture seule)</h3>
+{% if not clients %}<p class="muted">Aucun client. Créez-en un dans « Utilisateurs ».</p>{% endif %}
+<div class="checklist">{% for c in clients %}<label class="check"><input type="checkbox" name="clients" value="{{ c.id }}"{% if c.id in granted %} checked{% endif %}> {{ c.name }} <span class="muted">{{ c.email }}</span>{% if not c.active %} <span class="badge off">désactivé</span>{% endif %}</label>{% endfor %}</div>
+<div class="actions"><button>Enregistrer</button><a class="btn danger" href="{{ url_for('admin_pool_delete', pool_id=pool.id) }}">Supprimer la piscine</a></div>
+</form></section>
+{% endblock %}

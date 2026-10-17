@@ -1,0 +1,14 @@
+{% extends "base.html" %}{% set nav='ausers' %}
+{% block content %}
+<section class="panel"><h2>{{ u.name }}</h2>
+<form method="post">{{ csrf_input() }}<div class="grid">
+  <div class="field"><label for="name">Nom *</label><input id="name" name="name" required maxlength="120" value="{{ u.name }}"></div>
+  <div class="field"><label>E-mail</label><input value="{{ u.email }}" disabled></div>
+  <div class="field"><label for="password">Nouveau mot de passe (laisser vide = inchangé)</label><input id="password" name="password" type="password" minlength="10" autocomplete="new-password"></div>
+</div>
+<div class="checks"><label class="check"><input type="checkbox" name="active"{% if u.active %} checked{% endif %}> Compte actif</label></div>
+{% if u.role=='client' %}<h3>Piscines accessibles</h3>
+<p class="muted">{% for p in user_pools %}<a href="{{ url_for('admin_pool', pool_id=p.id) }}">{{ p.name }}</a>{{ ', ' if not loop.last }}{% else %}Aucune — à définir depuis les réglages d’une piscine.{% endfor %}</p>{% endif %}
+<div class="actions"><button>Enregistrer</button><a class="btn secondary" href="{{ url_for('admin_users') }}">Retour</a></div>
+</form></section>
+{% endblock %}

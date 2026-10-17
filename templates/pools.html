@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% set nav='pools' %}
+{% block content %}
+<section class="panel"><h2>{{ 'Toutes les piscines' if g.user.role=='admin' else 'Mes piscines' }}</h2>
+{% if not pools %}<div class="empty">Aucune piscine {{ 'enregistrée.' if g.user.role=='admin' else 'n’est associée à votre compte.' }}</div>{% endif %}
+<div class="poolgrid">
+{% for p in pools %}
+<a class="poolcard" href="{{ url_for('pool_history', pool_id=p.id) }}">
+  <h3>{{ p.name }}</h3><div class="muted">{{ p.address or '' }}</div>
+  <div class="kv"><span>Dernier contrôle : <b>{{ fr_date(p.check_date) }}</b></span>
+  {% if p.ph is not none %}<span>pH <b>{{ num(p.ph) }}</b></span>{% endif %}
+  {% if p.free_chlorine is not none %}<span>Chlore libre <b>{{ num(p.free_chlorine) }}</b></span>{% endif %}
+  {% if p.water_state %}<span>Eau <b>{{ p.water_state }}</b></span>{% endif %}</div>
+  <div class="kv"><span>{{ p.n }} contrôle(s)</span></div>
+</a>
+{% endfor %}
+</div></section>
+{% endblock %}

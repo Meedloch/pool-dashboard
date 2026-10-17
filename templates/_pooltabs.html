@@ -1,0 +1,5 @@
+<section class="panel"><h2>{{ pool.name }}</h2><div class="muted">{{ pool.address or '' }}</div></section>
+<div class="bar">
+  <a class="tab secondary" href="{{ url_for('pool_history', pool_id=pool.id) }}">← Contrôles</a>
+  <a class="tab active" href="{{ url_for('admin_pool', pool_id=pool.id) }}">Réglages</a>
+</div>

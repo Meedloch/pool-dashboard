@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% set nav='apools' %}
+{% block content %}
+<section class="panel"><h2>Supprimer la piscine « {{ pool.name }} » ?</h2>
+<p>Les <b>{{ n }}</b> contrôle(s) associés seront supprimés avec elle. Cette action est définitive.</p>
+<form method="post">{{ csrf_input() }}<div class="actions"><button class="danger">Supprimer définitivement</button>
+<a class="btn secondary" href="{{ url_for('admin_pool', pool_id=pool.id) }}">Annuler</a></div></form></section>
+{% endblock %}

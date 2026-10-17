@@ -1,0 +1,20 @@
+[Unit]
+Description=Suivi piscine (gunicorn)
+After=postgresql.service
+Requires=postgresql.service
+
+[Service]
+User=piscine
+Group=piscine
+WorkingDirectory=/opt/piscine
+EnvironmentFile=/etc/piscine.env
+ExecStart=/opt/piscine/venv/bin/gunicorn --workers 3 --bind unix:/run/piscine/piscine.sock app:app
+RuntimeDirectory=piscine
+Restart=on-failure
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

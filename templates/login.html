@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block title %}Connexion{% endblock %}
+{% block content %}
+<section class="panel loginbox"><h2>Connexion</h2>
+<form method="post">{{ csrf_input() }}
+  <div class="field"><label for="email">E-mail</label><input id="email" name="email" type="email" autocomplete="username" required autofocus></div>
+  <div class="field"><label for="password">Mot de passe</label><input id="password" name="password" type="password" autocomplete="current-password" required></div>
+  <div class="actions"><button type="submit">Se connecter</button></div>
+</form></section>
+{% endblock %}

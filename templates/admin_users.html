@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% set nav='ausers' %}
+{% block content %}
+<section class="panel"><h2>Nouvel utilisateur</h2>
+<form method="post">{{ csrf_input() }}<div class="grid">
+  <div class="field"><label for="name">Nom *</label><input id="name" name="name" required maxlength="120"></div>
+  <div class="field"><label for="email">E-mail *</label><input id="email" name="email" type="email" required autocomplete="off"></div>
+  <div class="field"><label for="password">Mot de passe * (10 car. min.)</label><input id="password" name="password" type="password" minlength="10" required autocomplete="new-password"></div>
+  <div class="field"><label for="role">Rôle</label><select id="role" name="role"><option value="client">Client (lecture seule)</option><option value="admin">Administrateur</option></select></div>
+</div><div class="actions"><button>Créer</button></div></form></section>
+<section class="panel"><h2>Utilisateurs</h2>
+<div class="tablewrap"><table><thead><tr><th>Nom</th><th>E-mail</th><th>Rôle</th><th>Piscines</th><th>Statut</th><th></th></tr></thead><tbody>
+{% for u in users %}<tr><td>{{ u.name }}</td><td>{{ u.email }}</td><td>{{ 'Administrateur' if u.role=='admin' else 'Client' }}</td><td>{{ '—' if u.role=='admin' else u.npools }}</td>
+<td>{% if u.active %}<span class="badge">actif</span>{% else %}<span class="badge off">désactivé</span>{% endif %}</td>
+<td><a class="btn small secondary" href="{{ url_for('admin_user', uid=u.id) }}">Modifier</a></td></tr>{% endfor %}</tbody></table></div></section>
+{% endblock %}

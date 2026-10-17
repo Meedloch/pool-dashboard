@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#15384b"><title>{% block title %}Suivi piscine{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header><div class="headrow">
+  <div><h1>Suivi d’entretien de piscine</h1><p>Fiche de contrôle de l’eau · historique et évolution des mesures</p></div>
+  {% if g.user %}<div class="who"><span>{{ g.user.name }}</span>
+    <form class="inline" method="post" action="{{ url_for('logout') }}">{{ csrf_input() }}<button class="small">Déconnexion</button></form></div>{% endif %}
+</div></header>
+<main>
+{% if g.user %}
+<nav class="bar">
+  <a class="tab {{ 'active' if nav=='pools' else 'secondary' }}" href="{{ url_for('pools') }}">Piscines</a>
+  {% if g.user.role == 'admin' %}
+  <a class="tab {{ 'active' if nav=='apools' else 'secondary' }}" href="{{ url_for('admin_pools') }}">Gérer les piscines</a>
+  <a class="tab {{ 'active' if nav=='ausers' else 'secondary' }}" href="{{ url_for('admin_users') }}">Utilisateurs</a>
+  {% endif %}
+</nav>
+{% endif %}
+{% for cat, msg in get_flashed_messages(with_categories=true) %}<div class="notice flash {{ 'err' if cat=='err' }}">{{ msg }}</div>{% endfor %}
+{% block content %}{% endblock %}
+</main>
+<footer>Suivi de la piscine</footer>
+{% block scripts %}{% endblock %}
+</body></html>
